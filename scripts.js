@@ -72,94 +72,85 @@ let newTitle, newAuthor, newPages, newRead;
 
 const createFormBox = function () {
 
-    let formBox = document.createElement("div");
-    formBox.setAttribute("class","mb-3 popup popup-text");
-    formBox.setAttribute("id","myModal");
-    formBox.style.width = "70%";
-    formBox.style.margin = "0 auto";
-       
-    let formHeader = document.createElement("h2");
+    let formBox = document.getElementById("formBox");
+    formBox.classList.add("form-group");
+
+    let closeBtn = document.getElementsByClassName("popup-close")[0];
+    closeBtn.addEventListener("click", () => {
+        document.getElementsByClassName("modal")[0].style.display="none";
+    });
+
+    let formHeader = document.createElement("h4");
     formHeader.appendChild(document.createTextNode("Add Book to Library"));
     formBox.appendChild(formHeader);
-    
-    let group1 = document.createElement("div");
-    group1.setAttribute("class","mb-3 modal-content");
-    formBox.appendChild(group1);
-
+    formBox.appendChild(document.createElement("br"));
+   
     let labelTitle = document.createElement("label");
-    labelTitle.setAttribute("text","Title: ");
-    labelTitle.setAttribute("class","form-label");
-    group1.appendChild(labelTitle);
+    labelTitle.appendChild(document.createTextNode("Title:"));
+    labelTitle.classList.add("form-label", "popup-label");
+    formBox.appendChild(labelTitle);
 
     let inputTitle = document.createElement("input");
     inputTitle.setAttribute("placeholder","The book title here");
-    inputTitle.setAttribute("class","form-control");
+    inputTitle.classList.add("popup-input", "form-control");
+    //inputTitle.setAttribute("class","modal-content");
     inputTitle.addEventListener("change", (event) => {newTitle=event.target.value;});
-    group1.appendChild(inputTitle);
+    labelTitle.appendChild(inputTitle);
 
-    let group2 = document.createElement("div");
-    group2.setAttribute("class","mb-3 modal-content");
-    formBox.appendChild(group2);
+    formBox.appendChild(document.createElement("br"));
 
     let labelAuthor = document.createElement("label");
-    labelAuthor.setAttribute("text","Author: ");
-    labelAuthor.setAttribute("class","form-label");
-    group2.appendChild(labelAuthor);
+    labelAuthor.appendChild(document.createTextNode("Author:"));
+    labelAuthor.classList.add("form-label", "popup-label");
+    formBox.appendChild(labelAuthor);
 
     let inputAuthor = document.createElement("input");
     inputAuthor.setAttribute("placeholder","Author name(s) here");
-    inputAuthor.setAttribute("class","form-control");
+    inputAuthor.classList.add("popup-input", "form-control");
     inputAuthor.addEventListener("input", (event) => {newAuthor=event.target.value;});
-    group2.appendChild(inputAuthor);
+    labelAuthor.appendChild(inputAuthor);
 
-    let group3 = document.createElement("div");
-    group3.setAttribute("class","mb-3 modal-content");
-    formBox.appendChild(group3);
+    formBox.appendChild(document.createElement("br"));
 
     let labelPages = document.createElement("label");
-    labelPages.setAttribute("text","Pages: ");
-    labelPages.setAttribute("class","form-label");
-    group3.appendChild(labelPages);
+    labelPages.appendChild(document.createTextNode("Pages:"));
+    labelPages.classList.add("form-label");
+    formBox.appendChild(labelPages);
 
+    let pagesAndRead = document.createElement("div");
+    
     let inputPages = document.createElement("input");
     inputPages.setAttribute("type", "number");
     inputPages.setAttribute("placeholder","Number of pages here");
-    inputPages.setAttribute("class","form-control");
+    inputPages.classList.add("form-control", "popup-input");
     inputPages.addEventListener("input", (event) => {newPages=event.target.value;});
-    group3.appendChild(inputPages);
+    labelPages.style.width = "50%";
+    inputPages.style.width = "80%";
+    labelPages.appendChild(inputPages);
 
-    let group4 = document.createElement("div");
-    group4.setAttribute("class","mb-3 modal-content");
-    formBox.appendChild(group4);
+    let labelCheck = document.createElement("label");
+    labelCheck.appendChild(document.createTextNode("Read: "));
+    labelCheck.classList.add("form-label");
+    labelCheck.style.width = "40%";
+    formBox.appendChild(labelCheck);
 
     let inputCheck = document.createElement("input");
     inputCheck.setAttribute("type", "checkbox");
-    inputCheck.setAttribute("class","form-check-input");
+    inputCheck.classList.add("form-check-input");
     inputCheck.addEventListener("input", (event) => {newRead=event.target.value;});
-    group4.appendChild(inputCheck);
+    labelCheck.appendChild(inputCheck);
 
-    let labelCheck = document.createElement("label");
-    labelCheck.setAttribute("text","Read: ");
-    labelCheck.setAttribute("class","form-label");
-    
+    formBox.appendChild(document.createElement("br"));
+
     let inputBtn = document.createElement("button");
-    // inputBtn.setAttribute("type", "submit");
-    inputBtn.setAttribute("class", "btn btn-primary modal-content");
+    inputBtn.setAttribute("class", "btn btn-outline-dark popup-label");
     inputBtn.appendChild(document.createTextNode("Add"));
     inputBtn.addEventListener("click", function(event) {
         let newBook = new Book(newTitle,newAuthor,newPages,newRead);
         document.getElementsByTagName("main")[0].appendChild(createBookBox(newBook));
     });
     formBox.appendChild(inputBtn);
-    
-    let closeBtn = document.createElement("button");
-    closeBtn.setAttribute("class","close btn btn-secondary modal-content");
-    closeBtn.appendChild(document.createTextNode("Close"));
-    closeBtn.addEventListener("click", () => {
-            document.getElementById("myModal").classList.remove("show");
-        });
-    formBox.appendChild(closeBtn);
-    
+
     return formBox;
 }
 
@@ -193,7 +184,7 @@ const createBookBox = function(book) {
    
     let removeBtn = document.createElement("div");
     let inputButton = document.createElement("button");
-    inputButton.setAttribute("type", "submit");
+    //inputButton.setAttribute("type", "submit");
     inputButton.setAttribute("class", "btn btn-primary");
     inputButton.appendChild(document.createTextNode("Remove"));
     removeBtn.appendChild(inputButton);
@@ -203,26 +194,21 @@ const createBookBox = function(book) {
 }
 
 
-let formBox = createFormBox();
-document.getElementsByTagName('main')[0].appendChild(formBox);
+const formBox = createFormBox();
+let mainArea = document.getElementsByTagName("main")[0];
+let formContainer = document.getElementsByClassName("popup-form")[0];
+//formContainer.appendChild(formBox);
+formContainer.style.display="block";
+// document.getElementsByTagName('main')[0].appendChild(formBox);
 // document.getElementById("formBox").style.display = "block";
-
-const btnShowForm = document.getElementById("btnShowForm");
-btnShowForm.addEventListener("click", () => {
-    document.getElementById("myModal").classList.add("show");
-    });
-
-// Get the button that opens the modal
-//var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var closeBtn = document.getElementsByClassName("close")[0];
-
+document.getElementById("addBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+    formContainer.style.display="block";
+}); 
 
 // When the user clicks anywhere outside of the modal, close it
-
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+    if (event.target == formContainer) {
+      formContainer.style.display = "none";
+    }
   }
-} 
